@@ -1,4 +1,4 @@
-
+import React from "react";
 import "./BatSignalIntro.css";
 
 function BatSignalIntro({ onFinish }) {

@@ -1,4 +1,4 @@
-
+import React from "react";
 import "./batmanloader.css";
 
 function BatmanLoader({ onFinish }) {
