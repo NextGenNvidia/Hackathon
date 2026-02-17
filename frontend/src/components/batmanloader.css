@@ -1,0 +1,99 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #111 0%, #000 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.loader.fade-out {
+  opacity: 0;
+}
+
+/* Bat Signal Styles (Exact match from Home.css) */
+
+/* Torch Beam */
+.loader-torch-beam {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 200px; /* Wider to cover target */
+  height: 100vh; /* Long enough to reach corner */
+  background: linear-gradient(to top, 
+    rgba(255, 255, 255, 0.6) 0%,   /* Bright Source */
+    rgba(255, 255, 255, 0.3) 30%,  /* Beam Body */
+    rgba(255, 255, 255, 0.05) 80%, /* Fading End */
+    transparent 100%
+  );
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(-36deg); /* Points to Top Left (~18%) */
+  clip-path: polygon(20% 0%, 80% 0%, 50% 100%); /* Inverted V shape: Top Wide, Bottom Point */
+  filter: blur(15px); /* Softer beam */
+  z-index: 4; /* Below logo (z-5), Above layers */
+  pointer-events: none;
+  opacity: 0.5;
+  animation: beamFlicker 2.5s ease-out forwards;
+}
+
+@keyframes beamFlicker {
+  0% { opacity: 0; }
+  10% { opacity: 0.5; }
+  20% { opacity: 0; }
+  30% { opacity: 0.1; }
+  40% { opacity: 0.6; }
+  50% { opacity: 0.1; }
+  60% { opacity: 0; }
+  70% { opacity: 0.7; }
+  80% { opacity: 0.2; }
+  90% { opacity: 0.8; }
+  100% { opacity: 1; } /* Fully visible at end */
+}
+
+/* Bat Logo Container (Top Left) */
+.loader-bat-logo-container {
+  position: absolute;
+  top: 10%;
+  left: 18%; /* Matches Home page position */
+  z-index: 10002;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  animation: beamFlicker 2.5s ease-out forwards; /* Syncs with beam */
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Moon Spotlight */
+.spotlight-beam {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, 
+    #ffffff 0%,
+    #f0f0f0 40%,
+    #e0e0e0 70%,
+    transparent 71%
+  );
+  filter: blur(2px) drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  z-index: -1;
+  border-radius: 50%;
+  mix-blend-mode: normal;
+  opacity: 0.9;
+}
+
+/* Bat Logo */
+.bat-logo {
+  width: 90px;
+  height: auto;
+  opacity: 0.95;
+  z-index: 2;
+}
