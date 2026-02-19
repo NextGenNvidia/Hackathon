@@ -90,8 +90,8 @@
 /* Bat Logo & Spotlight Container - Top Left */
 .bat-logo-container {
   position: absolute;
-  top: 10%;
-  left: 18%; /* Shifted right */
+  top: clamp(6%, 10vw, 10%);
+  left: clamp(8%, 18vw, 18%); /* Responsive left */
   /* Removed transform: translate(-50%, -50%) to use simple positioning */
   z-index: 5;
   display: flex;
@@ -125,8 +125,8 @@
 /* Large White Moon Circle behind Bat Logo */
 .spotlight-beam {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: clamp(60px, 18vw, 150px);
+  height: clamp(60px, 18vw, 150px);
   background: radial-gradient(circle, 
     #ffffff 0%,     /* Bright White center */
     #f0f0f0 40%,    /* Soft White body */
@@ -143,7 +143,7 @@
 
 /* Bat Logo Image - No Glow */
 .bat-logo {
-  width: 120px;
+  width: clamp(40px, 12vw, 120px);
   height: auto;
   opacity: 0.95;
   z-index: 2;
