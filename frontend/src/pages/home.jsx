@@ -60,9 +60,6 @@ function Home() {
         draggable="false"
       />
 
-      {/* Torch Beam (Bottom -> Top Left) */}
-      <div className="torch-beam"></div>
-
       {/* Bat Logo with Spotlight */}
       <div className="bat-logo-container">
         <div className="spotlight-beam"></div>
@@ -73,8 +70,17 @@ function Home() {
         />
       </div>
 
+      {/* Torch Beam (Bottom -> Top Left) */}
+      <div className="torch-beam"
+        style={{
+          '--target-x': '18%',
+          '--target-y': '10%',
+          '--spread': '86px'
+        }}></div>
+
+
       {/* Road Layer at Bottom */}
-      <div className="road-layer"></div>
+      {/* <div className="road-layer"></div> */}
 
       {/* Content */}
       {/* <div className="content">
