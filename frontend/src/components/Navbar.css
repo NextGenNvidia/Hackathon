@@ -1,3 +1,31 @@
+/* Navbar Actions (Burger + Sign Up) */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: auto;
+}
+
+.signup-btn {
+  background: linear-gradient(90deg, #16004a 0%, #000000 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 8px 22px;
+  border: none;
+  border-radius: 18px 0 18px 18px;
+  box-shadow: 0 2px 12px rgba(139,92,246,0.18);
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+  outline: none;
+  margin-left: auto;
+}
+.signup-btn:hover {
+  background: linear-gradient(90deg, #16004a 0%, #000000 100%);
+  transform: translateY(-2px) scale(1.04);
+}
 /* latin */
 @font-face {
   font-family: 'Share Tech Mono';
@@ -32,8 +60,8 @@
 }
 
 .navbar-logo img {
-  width: 40px;
-  height: 40px;
+  /* width: 80px; */
+  height: 4rem;
   filter: drop-shadow(0 0 12px #8b5cf6cc);
 }
 
@@ -51,6 +79,14 @@
   gap: 32px;
   list-style: none;
   transition: right 0.3s cubic-bezier(.4,0,.2,1);
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  height: 100%;
 }
 
 .navbar-links li a {

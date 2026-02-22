@@ -1,0 +1,112 @@
+/* City background stays fixed, cards scroll */
+.contact-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../../public/assets/Static-layer.png') center center/cover no-repeat;
+  background-attachment: fixed;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Scrollable Overlay Layer */
+.contact-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  background: rgba(0, 10, 30, 0.7);
+  backdrop-filter: blur(7px);
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Content Container */
+.contact-container {
+  background: none;
+  box-shadow: none;
+  padding: 40px 32px;
+  color: #fff;
+  width: 100%;
+  max-width: 1200px;
+  z-index: 2;
+  min-height: 100vh;
+}
+
+/* Team grid and panel style */
+.contact-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin-top: 24px;
+}
+
+/* Card Styling */
+.contact-card {
+  background: rgba(10, 15, 40, 0.85);
+  border-radius: 18px;
+  border: 2px solid #8b5cf6;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.18);
+  padding: 32px 18px 24px 18px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Hover Effect */
+.contact-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(139,92,246,0.35);
+}
+
+/* Image */
+.contact-photo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.12);
+}
+
+/* Name */
+.contact-name {
+  font-size: 1.5rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* Role */
+.contact-role {
+  font-size: 1.1rem;
+  color: #8b5cf6;
+  margin-bottom: 12px;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  /* Hide scrollbar for all browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+.contact-overlay::-webkit-scrollbar {
+  display: none;
+}

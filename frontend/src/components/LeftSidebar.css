@@ -1,0 +1,182 @@
+    /* cursor: pointer;
+} */
+
+/* Blue hover for logo SVG and text together */
+.sidebar-compartment:hover .sidebar-logo svg {
+    fill: #8b5cf6 !important;
+    stroke: #8b5cf6 !important;
+    transition: fill 0.2s, stroke 0.2s;
+}
+.sidebar-compartment:hover .sidebar-logo svg path,
+.sidebar-compartment:hover .sidebar-logo svg circle {
+    fill: #8b5cf6 !important;
+    stroke: #8b5cf6 !important;
+    transition: fill 0.2s, stroke 0.2s;
+}
+.sidebar-compartment:hover .sidebar-font {
+    color: #8b5cf6;
+    transition: color 0.2s;
+}
+/* Compartment logo section */
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Compartment font section */
+.sidebar-font {
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    font-family: Blender Pro Book, monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    /* margin-top: 0.5rem; */
+}
+/* Sidebar container styles */
+
+.left-sidebar {
+    position: fixed;
+    top: 80px;
+    left: 1rem;
+    width: 64px;
+    min-height: 380px;
+    background: linear-gradient(180deg, rgba(10,15,40,0.98) 80%, rgba(59,130,246,0.15) 100%);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(59,130,246,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 12px;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+    transition: left 0.3s, top 0.3s, width 0.3s, height 0.3s;
+}
+
+/* Hamburger button for sidebar */
+.sidebar-burger {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    z-index: 200;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.sidebar-burger span {
+    display: block;
+    width: 28px;
+    height: 4px;
+    margin: 4px 0;
+    background: #8b5cf6;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+.sidebar-burger.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.sidebar-burger.open span:nth-child(2) {
+    opacity: 0;
+}
+.sidebar-burger.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .left-sidebar {
+        display: none !important;
+    }
+    .sidebar-burger {
+        display: flex;
+        position: fixed;
+        top: 16px;
+        right: 16px;
+    }
+    .navbar {
+        display: none !important;
+    }
+    .social-sidebar {
+        display: none !important;
+    }
+}
+
+/* Icon styles */
+.nav-icon {
+    color: #fff;
+    font-size: 2rem;
+    margin: 0;
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+    text-decoration: none;
+}
+.nav-icon span{
+    color: #fff;
+    font-size: 2rem;
+    margin: 0;
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+    text-decoration: none;
+}
+.nav-icon:hover {
+    color: #8b5cf6;
+    background: rgba(139,92,246,0.12);
+    transform: scale(1.12);
+}
+.nav-icon span {
+    font-size: 1rem;
+    margin-top: 0.3rem;
+    color: #fff;
+    font-family: Blender Pro Book, monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-align: center;
+    display: block;
+    padding: 0 4px;
+}
+@media (max-width: 768px) {
+    .left-sidebar {
+        top: unset;
+        bottom: 0;
+        left: 0;
+        flex-direction: row;
+        width: 100vw;
+        min-height: unset;
+        height: 56px;
+        border-radius: 24px 24px 0 0;
+        padding: 0 12px;
+        gap: 18px;
+        justify-content: center;
+    }
+    .nav-icon {
+        font-size: 1.5rem;
+        width: 36px;
+        height: 36px;
+    }
+}

@@ -1,3 +1,62 @@
+/* Social Sidebar - Right Side */
+.social-sidebar {
+  position: fixed;
+  top: 80px;
+  right: 1rem;
+  width: 64px;
+  min-height: 380px;
+  background: linear-gradient(180deg, rgba(10,15,40,0.98) 80%, rgba(59,130,246,0.15) 100%);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 32px 0 24px 0;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.social-icon {
+  color: #fff;
+  font-size: 2rem;
+  margin: 0;
+  transition: color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+}
+.social-icon:hover {
+  color: #8b5cf6;
+  background: rgba(139,92,246,0.12);
+  transform: scale(1.12);
+}
+
+@media (max-width: 768px) {
+  .social-sidebar {
+    top: unset;
+    bottom: 0;
+    right: 0;
+    flex-direction: row;
+    width: 100vw;
+    min-height: unset;
+    height: 56px;
+    border-radius: 24px 24px 0 0;
+    padding: 0 12px;
+    gap: 18px;
+    justify-content: center;
+  }
+  .social-icon {
+    font-size: 1.5rem;
+    width: 36px;
+    height: 36px;
+  }
+}
 /* ============================================
    BASE & RESET
    ============================================ */
@@ -6,7 +65,33 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* ============================================
+   ROAD SVG
+   ============================================ */
+.road-wrapper {
+  position: absolute;
+  bottom: -10vw;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  width: max-content; /* very important */
+  animation: roadmove 3s linear infinite;
+}
 
+.road {
+  /* height: 70vh; */
+  width: 100vw;   /* each road exactly screen width */
+  flex-shrink: 0; /* prevents squishing */
+}
+
+@keyframes roadmove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100vw);
+  }
+}
 /* ============================================
    PARALLAX CONTAINER
    ============================================ */
@@ -74,7 +159,48 @@
 .layer1 {
   z-index: 4;
 }
-
+/* Bat mobile */
+.batmobile{
+  position: absolute;
+  bottom: 5vh;
+  left: 15%;
+  /* width: clamp(200px, 40vw, 400px); */
+  width: 15vw;
+  height: auto;
+  transform: translateX(-50%) scaleX(-1);
+  z-index: 20;
+  /* animation: batmobilemove 4s ease-in-out infinite; */
+}
+/* Shadow */
+.batmobile::after {
+  content: "";
+  position: absolute;
+  bottom: -10px; /* pushes shadow below car */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  z-index: 20;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  filter: blur(4px);
+  z-index: -1;
+}
+@keyframes batmobilemove {
+  0% {
+    transform: scaleX(-1) translateX(0);
+  }
+  50% {
+    transform: scaleX(-1) translateX(-30vw);
+  }
+  100% {
+    transform: scaleX(-1) translateX(-100vw);
+  }
+}
 /* Futuristic Bottom Layer with Bluish Theme */
 .road-layer {
   position: absolute;
@@ -84,7 +210,7 @@
   height: 10vh;
   background: #0a1929;
   z-index: 10;
-  border-top: 2px solid rgba(59, 130, 246, 0.3);
+  /* border-top: 2px solid rgba(59, 130, 246, 0.3); */
 }
 
 /* Bat Logo & Spotlight Container - Top Left */

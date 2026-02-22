@@ -1,0 +1,129 @@
+.avatar-page-bg {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #6a0572 0%, #ab23ff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 60px;
+}
+
+.avatar-card {
+  background: rgba(30, 0, 60, 0.85);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(139,92,246,0.18);
+  padding: 32px 40px;
+  color: #fff;
+  max-width: 520px;
+  width: 100%;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.avatar-header {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+}
+
+.avatar-main {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 18px;
+}
+
+.avatar-img {
+  width: 180px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(139,92,246,0.18);
+}
+
+.avatar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.avatar-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.avatar-btn {
+  background: #fff;
+  color: #6a0572;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.avatar-btn:hover {
+  background: #8b5cf6;
+  color: #fff;
+}
+
+.avatar-login-email {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.avatar-actions {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.avatar-action-btn {
+  background: #1e003c;
+  color: #fff;
+  border: 2px solid #8b5cf6;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+
+.logout-btn {
+  background: linear-gradient(90deg, #3b1f2b 0%, #0a0f28 100%);
+  color: #fff;
+  margin-top: 12px;
+}
+.logout-btn:hover {
+  background: linear-gradient(90deg, #8b5cf6 0%, #3b1f2b 100%);
+}
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.avatar-action-btn:hover {
+  background: #8b5cf6;
+  color: #fff;
+}
+
+.avatar-warning {
+  background: #1e003c;
+  color: #ffb3b3;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 1rem;
+  max-width: 700px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+.avatar-warning ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.avatar-warning li {
+  margin-bottom: 6px;
+}

@@ -1,8 +1,11 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   // Lock scroll when menu is open (mobile UX)
   useEffect(() => {
@@ -17,23 +20,29 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <img src="/assets/Batman.png" alt="Logo" />
-        <span className="navbar-title">NEXTGEN</span>
+        <img src="/assets/LOGO (1).png" alt="Logo" />
       </div>
       <ul className={`navbar-links ${menuOpen ? "open" : ""}`}>
         <li><a href="/">Home</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#register">Register</a></li>
+        <li><Link to="/register">Register</Link></li>
       </ul>
-      <button
-        className={`navbar-burger ${menuOpen ? "open" : ""}`}
-        aria-label="Toggle menu"
-        onClick={() => setMenuOpen((v) => !v)}
-      >
-        <span />
-        <span />
-        <span />
-      </button>
+      <div className="navbar-actions">
+        <button
+          className={`navbar-burger ${menuOpen ? "open" : ""}`}
+          aria-label="Toggle menu"
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+      {user ? (
+        <Link to="/avatar" className="signup-btn">{user.displayName || user.email}</Link>
+      ) : (
+        <Link to="/auth" className="signup-btn">Sign In / Sign Up</Link>
+      )}
       <div
         className={`navbar-backdrop ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(false)}
