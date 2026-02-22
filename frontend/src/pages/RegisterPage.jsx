@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import RightSidebar from "../components/RightSidebar";
 import { supabase } from "../supabase";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import "./RegisterPage.css";
 
 export default function RegisterPage() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
   const [teamName, setTeamName] = useState("");
   const [collegeName, setCollegeName] = useState("");
   const [leaderName, setLeaderName] = useState("");
@@ -15,6 +19,26 @@ export default function RegisterPage() {
   ]); // Start with 2 members
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="register-bg">
+        <Navbar />
+        <RightSidebar />
+        <div className="register-overlay">
+          <div className="register-glassmorphic">
+            Loading...
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleMemberChange = (idx, field, value) => {
     const updated = [...members];
