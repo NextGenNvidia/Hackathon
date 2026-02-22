@@ -24,7 +24,7 @@ function Navbar() {
       </div>
       <ul className={`navbar-links ${menuOpen ? "open" : ""}`}>
         <li><a href="/">Home</a></li>
-        <li><a href="#about">About</a></li>
+        <li><Link to="/accommodation">Accommodation</Link></li>
         <li><Link to="/register">Register</Link></li>
       </ul>
       <div className="navbar-actions">
