@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import RightSidebar from "../components/RightSidebar";
+import { useNavigate } from "react-router-dom";
 import "./AuthPage.css";
 
 const provider = new GoogleAuthProvider();
 
-export default function AuthPage() {
+function AuthPage() {
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const auth = getAuth(app);
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/avatar");
+    }
+  }, [user, loading, navigate]);
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -46,17 +56,6 @@ export default function AuthPage() {
       <div className="auth-overlay">
         <div className="auth-glassmorphic">
           Loading...
-        </div>
-      </div>
-    </div>
-  );
-  if (user) return (
-    <div className="auth-bg">
-      <Navbar />
-      <RightSidebar />
-      <div className="auth-overlay">
-        <div className="auth-glassmorphic">
-          You are already signed in as {user.email || user.displayName}.
         </div>
       </div>
     </div>
@@ -99,3 +98,5 @@ export default function AuthPage() {
     </div>
   );
 }
+
+export default AuthPage;

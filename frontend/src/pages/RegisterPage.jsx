@@ -137,7 +137,7 @@ export default function RegisterPage() {
               required
             />
             <div className="register-members">
-              <label>Team Members (excluding leader, 2-4):</label>
+              <label>Team Members (including leader, 2-4):</label>
               {members.map((member, idx) => (
                 <div key={idx} className="register-member-row">
                   <input
