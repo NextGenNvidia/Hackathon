@@ -105,75 +105,99 @@ export default function RegisterPage() {
       <Navbar />
       <RightSidebar />
       <div className="register-overlay">
-        <div className="register-glassmorphic">
-          <h2>Team Registration</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Team Name"
-              value={teamName}
-              onChange={e => setTeamName(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Leader college Name"
-              value={collegeName}
-              onChange={e => setCollegeName(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Leader Name"
-              value={leaderName}
-              onChange={e => setLeaderName(e.target.value)}
-              required
-            />
-            <input
-              type="email"
-              placeholder="Leader Email"
-              value={leaderEmail}
-              onChange={e => setLeaderEmail(e.target.value)}
-              required
-            />
-            <div className="register-members">
-              <label>Team Members (including leader, 2-4):</label>
-              {members.map((member, idx) => (
-                <div key={idx} className="register-member-row">
-                  <input
-                    type="text"
-                    placeholder={`Member ${idx + 2} Name`}
-                    value={member.name}
-                    onChange={e => handleMemberChange(idx, "name", e.target.value)}
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder={`Member ${idx + 2} Email`}
-                    value={member.email}
-                    onChange={e => handleMemberChange(idx, "email", e.target.value)}
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder={`Member ${idx + 2} College`}
-                    value={member.college}
-                    onChange={e => handleMemberChange(idx, "college", e.target.value)}
-                    required
-                  />
-                  {members.length > 2 && (
-                    <button type="button" className="remove-member-btn" onClick={() => removeMember(idx)}>-</button>
-                  )}
-                </div>
-              ))}
+        <div className="register-container">
+          <div className="register-header">
+            <h2>Team Registration</h2>
+            <div className="accent-line"></div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="registration-form">
+            <div className="form-section register-main-card">
+              <h3 className="section-title">Squad Identity</h3>
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="Team Name"
+                  value={teamName}
+                  onChange={e => setTeamName(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Leader College Name"
+                  value={collegeName}
+                  onChange={e => setCollegeName(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Leader Name"
+                  value={leaderName}
+                  onChange={e => setLeaderName(e.target.value)}
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Leader Email"
+                  value={leaderEmail}
+                  onChange={e => setLeaderEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-section register-members-section">
+              <h3 className="section-title">The Roster</h3>
+              <div className="members-grid">
+                {members.map((member, idx) => (
+                  <div key={idx} className="member-identity-card">
+                    <div className="card-header">
+                      <span>Agent {idx + 2}</span>
+                      {members.length > 2 && (
+                        <button type="button" className="remove-btn" onClick={() => removeMember(idx)}>✕</button>
+                      )}
+                    </div>
+                    <div className="card-inputs">
+                      <input
+                        type="text"
+                        placeholder="Name"
+                        value={member.name}
+                        onChange={e => handleMemberChange(idx, "name", e.target.value)}
+                        required
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        value={member.email}
+                        onChange={e => handleMemberChange(idx, "email", e.target.value)}
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="College"
+                        value={member.college}
+                        onChange={e => handleMemberChange(idx, "college", e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               {members.length < 4 && (
-                <button type="button" className="add-member-btn" onClick={addMember}>Add Member</button>
+                <button type="button" className="add-agent-btn" onClick={addMember}>
+                  <span className="plus">+</span> Add New Agent
+                </button>
               )}
             </div>
-            <button type="submit">Register</button>
+
+            <button type="submit" className="finalize-registration-btn">
+              Execute Registration
+            </button>
           </form>
-          {error && <p className="register-error">{error}</p>}
-          {success && <p className="register-success">{success}</p>}
+
+          {error && <div className="status-msg error-msg">{error}</div>}
+          {success && <div className="status-msg success-msg">{success}</div>}
         </div>
       </div>
     </div>
