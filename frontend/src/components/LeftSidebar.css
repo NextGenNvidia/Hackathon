@@ -97,13 +97,7 @@
         display: none !important;
     }
     .sidebar-burger {
-        display: flex;
-        position: fixed;
-        top: 16px;
-        right: 16px;
-    }
-    .navbar {
-        display: none !important;
+        display: none; /* Hide sidebar burger, use main navbar burger */
     }
     .social-sidebar {
         display: none !important;

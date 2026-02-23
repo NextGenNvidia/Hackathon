@@ -56,17 +56,50 @@
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
-
 .navbar-logo img {
   /* width: 80px; */
   height: 4rem;
   filter: drop-shadow(0 0 12px #8b5cf6cc);
 }
 
+/* Hamburger menu button */
+.navbar-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 36px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 10000;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.navbar-burger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+.navbar-burger.open span:nth-child(1) {
+  transform: translateY(10.5px) rotate(45deg);
+}
+.navbar-burger.open span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.navbar-burger.open span:nth-child(3) {
+  transform: translateY(-10.5px) rotate(-45deg);
+}
+
 .navbar-title {
-    font-family: 'Share Tech Mono', monospace;
+  font-family: 'Share Tech Mono', monospace;
   font-size: 1.5rem;
   font-weight: 900;
   letter-spacing: 6px;
@@ -97,38 +130,17 @@
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 8px;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* .navbar-links li a:hover { */
-/* Burger menu for mobile */
-.navbar-burger {
+.navbar-links li a:hover {
+  color: #8b5cf6;
+  text-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+}
+
+
+.nav-socials-accordion, .mobile-only-link {
   display: none;
-  flex-direction: column;
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 2.2rem;
-}
-
-.navbar-burger span {
-  display: block;
-  height: 4px;
-  width: 100%;
-  background: #fff;
-  border-radius: 2px;
-    /* gap property removed, not valid here */
-}
-
-.navbar-burger.open span:nth-child(1) {
-  transform: translateY(10px) rotate(45deg);
-}
-.navbar-burger.open span:nth-child(2) {
-  opacity: 0;
-}
-.navbar-burger.open span:nth-child(3) {
-  transform: translateY(-10px) rotate(-45deg);
 }
 
 /* Mobile styles */
@@ -148,43 +160,121 @@
 
 @media (max-width: 768px) {
   .navbar {
-    height: 56px;
-    padding: 0 8px;
+    height: 60px;
+    padding: 0 20px;
   }
+  
+  .navbar-actions {
+    margin-left: auto; /* Burger always on right */
+  }
+
   .navbar-links {
     position: fixed;
     top: 0;
     right: -100vw;
+    left: auto; /* Reset desktop centering */
+    transform: none; /* Reset desktop centering */
     height: 100vh;
-    width: 70vw;
-    max-width: 320px;
-    background: rgba(10,25,41,0.98);
+    width: 100vw; /* Full screen */
+    background: rgba(0, 5, 20, 0.98); /* More opaque dark blue */
     flex-direction: column;
-    align-items: flex-start;
-    padding: 80px 24px 24px 24px;
-    gap: 32px;
-    box-shadow: -8px 0 32px 0 rgba(59,130,246,0.12);
+    justify-content: center; /* Center links vertically */
+    align-items: center; /* Center links horizontally */
+    padding: 0;
+    gap: 40px;
+    box-shadow: none;
     z-index: 101;
-    transition: right 0.3s cubic-bezier(.4,0,.2,1);
+    transition: right 0.4s cubic-bezier(.4,0,.2,1);
+    backdrop-filter: blur(15px);
   }
+
   .navbar-links.open {
     right: 0;
   }
+
+  .navbar-links li a {
+    font-size: 2.2rem; /* Larger links on mobile */
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+  }
+
+  .signup-btn {
+    display: none !important; /* Hide navbar signup on mobile, use hero CTA instead */
+  }
+
   .navbar-burger {
     display: flex !important;
   }
+
   .navbar-backdrop {
-    display: none;
+    display: none !important; /* Not needed for full-screen menu */
   }
-  .navbar-backdrop.open {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 100;
-    animation: fadeIn 0.2s;
+
+  .mobile-only-link {
+    display: flex !important; /* Show on mobile */
+  }
+
+  /* Nav Socials Accordion Styles - Mobile Only */
+  .nav-socials-accordion {
+    width: 100%;
+    display: flex; /* Overrides global display: none */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .socials-toggle-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2.2rem;
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 8px 16px;
+    transition: color 0.3s;
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+  }
+
+  .socials-toggle-btn:active {
+    color: #8b5cf6;
+  }
+
+  .nav-social-links {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: max-height 0.4s ease-out, margin-top 0.4s;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .nav-socials-accordion.active .nav-social-links {
+    max-height: 500px; /* Large enough for all links */
+    margin-top: 20px;
+  }
+
+  .nav-social-links a {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.4rem !important;
+    letter-spacing: 2px !important;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .nav-social-links a:hover, .nav-social-links a:active {
+    color: #fff !important;
+    text-shadow: 0 0 12px #8b5cf6;
+    transform: scale(1.1);
   }
 }
+
 
 @keyframes fadeIn {
   from { opacity: 0; }
