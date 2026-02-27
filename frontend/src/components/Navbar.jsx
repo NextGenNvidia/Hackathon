@@ -27,7 +27,7 @@ function Navbar() {
       <ul className={`navbar-links ${menuOpen ? "open" : ""}`}>
         <li><a href="/" onClick={() => setMenuOpen(false)}>Home</a></li>
         <li><Link to="/accommodation" onClick={() => setMenuOpen(false)}>Accommodation</Link></li>
-        <li><Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link></li>
+        <li><a href="https://unstop.com/hackathons/ai-arena-gotham-edition-kiet-group-of-institutions-1640378?lb=i1Fw6PAU" target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>Register</a></li>
 
         {/* Mobile-only additional links */}
         <li className="mobile-only-link"><Link to="/timeline" onClick={() => setMenuOpen(false)}>Timeline</Link></li>

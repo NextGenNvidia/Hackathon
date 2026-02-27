@@ -126,7 +126,7 @@ function Home() {
             <p>ASCEND INTO THE NIGHT</p>
           </div>
           <div className="mobile-cta">
-            <Link to="/register" className="mobile-btn">GET STARTED</Link>
+            <a href="https://unstop.com/hackathons/ai-arena-gotham-edition-kiet-group-of-institutions-1640378?lb=i1Fw6PAU" className="mobile-btn" target="_blank" rel="noopener noreferrer">GET STARTED</a>
           </div>
         </div>
       )}
