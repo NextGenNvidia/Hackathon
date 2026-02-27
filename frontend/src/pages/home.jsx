@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import "./home.css";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
 
 function Home() {
   const spotlightRef = useRef();
