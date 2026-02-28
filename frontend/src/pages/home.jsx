@@ -1,12 +1,22 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./home.css";
 import Navbar from "../components/Navbar";
+
+const REGISTER_URL =
+  "https://unstop.com/hackathons/ai-arena-gotham-edition-kiet-group-of-institutions-1640378?lb=i1Fw6PAU";
 
 function Home() {
   const spotlightRef = useRef();
   const torchBeamRef = useRef();
   const layer1Ref = useRef();
   const layer2Ref = useRef();
+  const mobileThreeRef = useRef();
+  const mobileScrollRef = useRef();
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [scrollY, setScrollY] = useState(0);
+  const [activeSection, setActiveSection] = useState(0);
 
   // Mobile touch move handler
   const phonemove = (e) => {
@@ -39,19 +49,23 @@ function Home() {
     }
   };
 
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
-
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (isMobile) return undefined;
+
     function updateBeam() {
       if (!spotlightRef.current || !torchBeamRef.current) return;
       const spot = spotlightRef.current.getBoundingClientRect();
-      const home = document.querySelector('.home').getBoundingClientRect();
+      const homeRoot =
+        document.querySelector(".home.desktop") || document.querySelector(".home");
+      if (!homeRoot) return;
+
+      const home = homeRoot.getBoundingClientRect();
       // Center of spotlight relative to .home
       const spotX = spot.left + spot.width / 2 - home.left;
       const spotY = spot.top + spot.height / 2 - home.top;
@@ -61,20 +75,457 @@ function Home() {
       // Angle from base to spotlight
       const dx = spotX - baseX;
       const dy = spotY - baseY;
-      const angle = Math.atan2(dx, -dy) * 180 / Math.PI;
+      const angle = (Math.atan2(dx, -dy) * 180) / Math.PI;
       torchBeamRef.current.style.transform = `translateX(-50%) rotate(${angle}deg)`;
       // Set beam length
       const dist = Math.sqrt(dx * dx + dy * dy);
       torchBeamRef.current.style.height = `${dist}px`;
     }
     updateBeam();
-    window.addEventListener('resize', updateBeam);
-    return () => window.removeEventListener('resize', updateBeam);
-  }, []);
+    window.addEventListener("resize", updateBeam);
+    return () => window.removeEventListener("resize", updateBeam);
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (!isMobile || !mobileScrollRef.current) return undefined;
+
+    const scrollContainer = mobileScrollRef.current;
+    const onScroll = () => setScrollY(scrollContainer.scrollTop || 0);
+
+    scrollContainer.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return () => scrollContainer.removeEventListener("scroll", onScroll);
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (!isMobile || !mobileScrollRef.current) return undefined;
+
+    const scrollContainer = mobileScrollRef.current;
+    const sections = Array.from(
+      scrollContainer.querySelectorAll("[data-mobile-section]")
+    );
+
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const sectionIndex = Number(entry.target.getAttribute("data-index"));
+          if (!Number.isNaN(sectionIndex)) {
+            setActiveSection(sectionIndex);
+          }
+        });
+      },
+      { root: scrollContainer, threshold: 0.55 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (!isMobile || !mobileThreeRef.current || !mobileScrollRef.current) return undefined;
+
+    let renderer;
+    let animationFrameId;
+    let resizeHandler;
+    let disposeScene = () => {};
+    let destroyed = false;
+
+    const host = mobileThreeRef.current;
+    const scrollContainer = mobileScrollRef.current;
+
+    const initializeScene = (THREE) => {
+      if (!host || destroyed) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        46,
+        host.clientWidth / host.clientHeight,
+        0.1,
+        100
+      );
+      camera.position.set(0, 0, 12);
+
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(host.clientWidth, host.clientHeight);
+      renderer.setClearColor(0x000000, 0);
+      host.appendChild(renderer.domElement);
+
+      const sceneGroup = new THREE.Group();
+      scene.add(sceneGroup);
+
+      const coreGeometry = new THREE.TorusKnotGeometry(2, 0.45, 180, 26);
+      const coreMaterial = new THREE.MeshStandardMaterial({
+        color: 0x6fdfff,
+        emissive: 0x002f4b,
+        roughness: 0.24,
+        metalness: 0.55,
+        wireframe: true,
+      });
+      const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+      sceneGroup.add(coreMesh);
+
+      const ringGeometry = new THREE.RingGeometry(2.9, 3.2, 96);
+      const ringMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffb347,
+        transparent: true,
+        opacity: 0.32,
+        side: THREE.DoubleSide,
+      });
+      const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+      ringMesh.rotation.x = Math.PI / 3;
+      sceneGroup.add(ringMesh);
+
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particleCount = 480;
+      const particleData = new Float32Array(particleCount * 3);
+
+      for (let index = 0; index < particleCount; index += 1) {
+        const offset = index * 3;
+        const radius = 5 + Math.random() * 5;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+
+        particleData[offset] = radius * Math.sin(phi) * Math.cos(theta);
+        particleData[offset + 1] = radius * Math.sin(phi) * Math.sin(theta);
+        particleData[offset + 2] = radius * Math.cos(phi);
+      }
+
+      particlesGeometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(particleData, 3)
+      );
+
+      const particlesMaterial = new THREE.PointsMaterial({
+        color: 0xb7f3ff,
+        size: 0.055,
+        transparent: true,
+        opacity: 0.88,
+      });
+      const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particles);
+
+      const keyLight = new THREE.PointLight(0x88e8ff, 1.6, 45);
+      keyLight.position.set(6, 5, 9);
+      scene.add(keyLight);
+
+      const fillLight = new THREE.AmbientLight(0x244a72, 0.95);
+      scene.add(fillLight);
+
+      const clock = new THREE.Clock();
+
+      const animate = () => {
+        if (destroyed || !renderer) return;
+
+        const elapsed = clock.getElapsedTime();
+        const maxScroll = Math.max(
+          scrollContainer.scrollHeight - scrollContainer.clientHeight,
+          1
+        );
+        const scrollProgress = Math.min(scrollContainer.scrollTop / maxScroll, 1);
+
+        sceneGroup.rotation.x = elapsed * 0.16 + scrollProgress * 1.35;
+        sceneGroup.rotation.y = elapsed * 0.22 + scrollProgress * 3.4;
+        ringMesh.rotation.z = elapsed * 0.42 + scrollProgress * 2.2;
+        coreMesh.scale.setScalar(1 + scrollProgress * 0.24);
+
+        particles.rotation.y = -elapsed * 0.05 - scrollProgress * 1.8;
+        particles.rotation.x = elapsed * 0.025 + scrollProgress * 0.5;
+
+        camera.position.z = 12 - scrollProgress * 2.2;
+
+        renderer.render(scene, camera);
+        animationFrameId = window.requestAnimationFrame(animate);
+      };
+
+      animate();
+
+      resizeHandler = () => {
+        if (!renderer || !host) return;
+        const width = host.clientWidth;
+        const height = host.clientHeight || window.innerHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+
+      window.addEventListener("resize", resizeHandler);
+
+      disposeScene = () => {
+        window.removeEventListener("resize", resizeHandler);
+        if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+
+        coreGeometry.dispose();
+        coreMaterial.dispose();
+        ringGeometry.dispose();
+        ringMaterial.dispose();
+        particlesGeometry.dispose();
+        particlesMaterial.dispose();
+
+        if (renderer) {
+          renderer.dispose();
+          if (host.contains(renderer.domElement)) {
+            host.removeChild(renderer.domElement);
+          }
+        }
+      };
+    };
+
+    const loadThreeAndStart = async () => {
+      try {
+        if (window.THREE) {
+          initializeScene(window.THREE);
+          return;
+        }
+
+        const existingScript = document.getElementById("mobile-three-cdn");
+        if (existingScript) {
+          await new Promise((resolve, reject) => {
+            if (window.THREE) {
+              resolve();
+              return;
+            }
+
+            existingScript.addEventListener("load", resolve, { once: true });
+            existingScript.addEventListener("error", reject, { once: true });
+          });
+
+          if (window.THREE) initializeScene(window.THREE);
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.id = "mobile-three-cdn";
+        script.src = "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js";
+        script.async = true;
+
+        await new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+
+        if (window.THREE) {
+          initializeScene(window.THREE);
+        }
+      } catch (error) {
+        // Keep experience usable without 3D layer if CDN fails.
+        console.error("Unable to load Three.js for mobile home scene.", error);
+      }
+    };
+
+    loadThreeAndStart();
+
+    return () => {
+      destroyed = true;
+      disposeScene();
+    };
+  }, [isMobile]);
+
+  const goToSection = (sectionId) => {
+    const section = mobileScrollRef.current?.querySelector(`#${sectionId}`);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const maxMobileScroll = mobileScrollRef.current
+    ? Math.max(
+        mobileScrollRef.current.scrollHeight - mobileScrollRef.current.clientHeight,
+        1
+      )
+    : 1;
+
+  const mobileScrollProgress = isMobile ? Math.min(scrollY / maxMobileScroll, 1) : 0;
+
+  if (isMobile) {
+    return (
+      <div
+        className="home mobile mobile-onepage"
+        style={{ "--mobile-scroll-progress": mobileScrollProgress }}
+      >
+        <Navbar />
+
+        <div className="mobile-three-layer" ref={mobileThreeRef} aria-hidden="true"></div>
+        <div className="mobile-chroma-fog" aria-hidden="true"></div>
+        <div className="mobile-noise-mask" aria-hidden="true"></div>
+
+        <div className="mobile-progress-rail" aria-hidden="true">
+          <span
+            className="mobile-progress-fill"
+            style={{ transform: `scaleY(${Math.max(mobileScrollProgress, 0.02)})` }}
+          ></span>
+        </div>
+
+        <main className="mobile-scroll-deck" ref={mobileScrollRef}>
+          <section
+            className={`mobile-panel panel-hero ${activeSection === 0 ? "is-active" : ""}`}
+            data-mobile-section
+            data-index="0"
+          >
+            <p className="panel-kicker">AI Arena 2026</p>
+            <img src="/assets/Batman.png" alt="Next Gen Emblem" className="mobile-crest" />
+            <h1>NEXT GEN GOTHAM</h1>
+            <p className="panel-copy">
+              A mobile-first hackathon journey with cinematic visuals, AI challenges, and
+              intense build energy from the first swipe.
+            </p>
+
+            <div className="panel-actions">
+              <a
+                href={REGISTER_URL}
+                className="mobile-solid-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Register Now
+              </a>
+              <button
+                type="button"
+                className="mobile-ghost-btn"
+                onClick={() => goToSection("mobile-mission")}
+              >
+                Explore Scroll
+              </button>
+            </div>
+
+            <div className="hero-metrics">
+              <div>
+                <strong>24H</strong>
+                <span>Build Sprint</span>
+              </div>
+              <div>
+                <strong>AI + Web3</strong>
+                <span>Theme Focus</span>
+              </div>
+              <div>
+                <strong>Live</strong>
+                <span>Mentor War Room</span>
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="mobile-mission"
+            className={`mobile-panel panel-story ${activeSection === 1 ? "is-active" : ""}`}
+            data-mobile-section
+            data-index="1"
+          >
+            <p className="panel-kicker">Mission Control</p>
+            <h2>Built For Ambitious Teams</h2>
+            <p className="panel-copy">
+              The home flow now tells the full story so participants instantly understand
+              what they are entering and why they should join.
+            </p>
+
+            <div className="story-cards">
+              <article>
+                <h3>Immersive Setup</h3>
+                <p>Stage visuals, lighting cues, and guided checkpoints throughout the night.</p>
+              </article>
+              <article>
+                <h3>Mentor Drops</h3>
+                <p>Rapid technical interventions to unblock architecture and deployment issues.</p>
+              </article>
+              <article>
+                <h3>Showtime Finale</h3>
+                <p>High-impact demo round with live scoring and spotlight moments.</p>
+              </article>
+            </div>
+          </section>
+
+          <section
+            className={`mobile-panel panel-tracks ${activeSection === 2 ? "is-active" : ""}`}
+            data-mobile-section
+            data-index="2"
+          >
+            <p className="panel-kicker">Build Tracks</p>
+            <h2>Choose Your Arena</h2>
+            <p className="panel-copy">
+              Compete in high-value problem statements and ship a working build, not just a pitch.
+            </p>
+
+            <div className="tracks-grid">
+              <span>Autonomous Agents</span>
+              <span>On-Device AI</span>
+              <span>Health Intelligence</span>
+              <span>Climate Signal Systems</span>
+              <span>Fintech Defense</span>
+              <span>Public Safety Tech</span>
+            </div>
+
+            <Link to="/timeline" className="panel-inline-link">
+              Open Full Timeline
+            </Link>
+          </section>
+
+          <section
+            className={`mobile-panel panel-flow ${activeSection === 3 ? "is-active" : ""}`}
+            data-mobile-section
+            data-index="3"
+          >
+            <p className="panel-kicker">Night Protocol</p>
+            <h2>Event Flow Snapshot</h2>
+
+            <ol className="flow-list">
+              <li>
+                <strong>Launch Sequence</strong>
+                <p>Opening keynote, track reveal, and team lock-in.</p>
+              </li>
+              <li>
+                <strong>Build Window</strong>
+                <p>Hands-on coding with mentor checkpoints and challenge boosters.</p>
+              </li>
+              <li>
+                <strong>Demo Grid</strong>
+                <p>Shortlisted teams present for jury scoring and final rankings.</p>
+              </li>
+            </ol>
+          </section>
+
+          <section
+            className={`mobile-panel panel-cta ${activeSection === 4 ? "is-active" : ""}`}
+            data-mobile-section
+            data-index="4"
+          >
+            <p className="panel-kicker">Final Call</p>
+            <h2>Own The Night</h2>
+            <p className="panel-copy">
+              Bring your team, build a serious product, and compete for recognition in the
+              most cinematic edition of Next Gen yet.
+            </p>
+
+            <a
+              href={REGISTER_URL}
+              className="mobile-solid-btn wide"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Secure Your Spot
+            </a>
+
+            <div className="panel-links">
+              <Link to="/sponsors">Sponsors</Link>
+              <Link to="/about">About</Link>
+              <Link to="/contact">Contact</Link>
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div
-      className={`home ${isMobile ? "mobile" : "desktop"}`}
+      className="home desktop"
       onMouseMove={handleMouseMove}
       onTouchMove={phonemove}
     >
@@ -90,73 +541,46 @@ function Home() {
         draggable="false"
       />
 
-      {/* Simplified Layers for Mobile */}
-      {!isMobile && (
-        <>
-          {/* Layer 2 - Middle - PARALLAX */}
-          <img
-            ref={layer2Ref}
-            src="/assets/Untitled-1.png"
-            alt="Middle Layer"
-            className="bat-parallax layer2"
-            draggable="false"
-          />
-          {/* Layer 1 - Front - PARALLAX */}
-          <img
-            ref={layer1Ref}
-            src="/assets/22.png"
-            alt="Front Layer"
-            className="bat-parallax layer1"
-            draggable="false"
-          />
-        </>
-      )}
+      {/* Layer 2 - Middle - PARALLAX */}
+      <img
+        ref={layer2Ref}
+        src="/assets/Untitled-1.png"
+        alt="Middle Layer"
+        className="bat-parallax layer2"
+        draggable="false"
+      />
+      {/* Layer 1 - Front - PARALLAX */}
+      <img
+        ref={layer1Ref}
+        src="/assets/22.png"
+        alt="Front Layer"
+        className="bat-parallax layer1"
+        draggable="false"
+      />
 
-      {/* Mobile-only Hero Experience */}
-      {isMobile && (
-        <div className="mobile-premium-hero">
-          <div className="mobile-glow-pulse"></div>
-          <div className="mobile-logo-center">
-            <img src="/assets/Batman.png" alt="Batman" className="mobile-bat-logo" />
-          </div>
-          <div className="mobile-title-main">
-            <h1>NEXT GEN</h1>
-            <div className="mobile-title-divider"></div>
-            <p>ASCEND INTO THE NIGHT</p>
-          </div>
-          <div className="mobile-cta">
-            <a href="https://unstop.com/hackathons/ai-arena-gotham-edition-kiet-group-of-institutions-1640378?lb=i1Fw6PAU" className="mobile-btn" target="_blank" rel="noopener noreferrer">GET STARTED</a>
-          </div>
-        </div>
-      )}
+      {/* Torch Beam (Bottom -> Top Left) */}
+      <div
+        className="torch-beam"
+        ref={torchBeamRef}
+        style={{ transition: "transform 0.3s, height 0.3s" }}
+      ></div>
 
-      {!isMobile && (
-        <>
-          {/* Torch Beam (Bottom -> Top Left) */}
-          <div
-            className="torch-beam"
-            ref={torchBeamRef}
-            style={{ transition: 'transform 0.3s, height 0.3s' }}
-          ></div>
+      {/* Bat Logo with Spotlight */}
+      <div className="bat-logo-container">
+        <div className="spotlight-beam" ref={spotlightRef}></div>
+        <img
+          src="/assets/Batman.png"
+          alt="Batman Logo"
+          className="bat-logo"
+        />
+      </div>
 
-          {/* Bat Logo with Spotlight */}
-          <div className="bat-logo-container">
-            <div className="spotlight-beam" ref={spotlightRef}></div>
-            <img
-              src="/assets/Batman.png"
-              alt="Batman Logo"
-              className="bat-logo"
-            />
-          </div>
-
-          {/* Bat Mobile */}
-          <img
-            src="/assets/Bat-mobile.png"
-            alt="Batmobile"
-            className="batmobile"
-          />
-        </>
-      )}
+      {/* Bat Mobile */}
+      <img
+        src="/assets/Bat-mobile.png"
+        alt="Batmobile"
+        className="batmobile"
+      />
       {/* Road Layer at Bottom */}
       <div className="road-layer"></div>
       {/* Road SVG layer */}
@@ -195,22 +619,20 @@ function Home() {
         </a>
       </div>
       {/* Hackathon logo overlay - only on desktop */}
-      {!isMobile && (
-        <img
-          src="/assets/hackathon-removebg-preview.png"
-          alt="Hackathon Logo"
-          className="hackathon-logo"
-          style={{
-            position: "absolute",
-            top: "5rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "30rem",
-            zIndex: 100,
-            pointerEvents: "none"
-          }}
-        />
-      )}
+      <img
+        src="/assets/hackathon-removebg-preview.png"
+        alt="Hackathon Logo"
+        className="hackathon-logo"
+        style={{
+          position: "absolute",
+          top: "5rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "30rem",
+          zIndex: 100,
+          pointerEvents: "none"
+        }}
+      />
     </div>
   );
 }
