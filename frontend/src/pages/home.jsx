@@ -403,7 +403,7 @@ function Home() {
                 <span>Build Sprint</span>
               </div>
               <div>
-                <strong>AI + Web3</strong>
+                <strong>ML + Agentic + GenAI</strong>
                 <span>Theme Focus</span>
               </div>
               <div>
