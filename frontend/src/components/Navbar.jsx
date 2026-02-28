@@ -33,6 +33,11 @@ function Navbar() {
         <li className="mobile-only-link"><Link to="/timeline" onClick={() => setMenuOpen(false)}>Timeline</Link></li>
         <li className="mobile-only-link"><Link to="/sponsors" onClick={() => setMenuOpen(false)}>Sponsors</Link></li>
         <li className="mobile-only-link"><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>
+        <li className="mobile-only-link">
+          <Link to={user ? "/avatar" : "/auth"} onClick={() => setMenuOpen(false)}>
+            {user ? "My Avatar" : "Sign In"}
+          </Link>
+        </li>
 
         {/* Expandable Socials for Mobile */}
         <li className={`nav-socials-accordion ${socialsOpen ? "active" : ""}`}>

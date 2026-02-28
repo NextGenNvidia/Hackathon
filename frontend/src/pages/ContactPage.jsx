@@ -25,7 +25,7 @@ export default function ContactPage() {
     },
     {
       fullName: "Shreya Jain",
-      image: "/assets/shreya.png",
+      image: "/assets/Shreya.png",
       role: "Core Team",
       email: "shreya.ai.arena.kiet@gmail.com",
     },
