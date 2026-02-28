@@ -40,7 +40,7 @@ function Navbar() {
             className="socials-toggle-btn"
             onClick={() => setSocialsOpen(!socialsOpen)}
           >
-            Socials {socialsOpen ? "−" : "+"}
+            Socials {socialsOpen ? "-" : "+"}
           </button>
           <div className="nav-social-links">
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>

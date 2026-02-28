@@ -1,0 +1,416 @@
+.timeline-shell {
+  position: relative;
+  min-height: 100vh;
+  color: #eaf8ff;
+  font-family: "Share Tech Mono", "Blender Pro Book", monospace;
+  overflow: hidden;
+}
+
+.timeline-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(110% 85% at 8% 8%, rgba(92, 223, 255, 0.16), transparent 58%),
+    radial-gradient(90% 90% at 95% 15%, rgba(255, 192, 104, 0.14), transparent 54%),
+    linear-gradient(180deg, #030f1d 0%, #020812 100%);
+}
+
+.timeline-noise {
+  position: fixed;
+  inset: -30%;
+  z-index: 1;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+}
+
+.timeline-page {
+  position: relative;
+  z-index: 2;
+  width: min(1160px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 100px 0 80px;
+}
+
+.timeline-hero {
+  border: 1px solid rgba(115, 223, 255, 0.26);
+  border-radius: 24px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  background:
+    linear-gradient(145deg, rgba(10, 28, 44, 0.82) 0%, rgba(4, 14, 24, 0.62) 100%),
+    radial-gradient(circle at 86% 4%, rgba(255, 190, 94, 0.1), transparent 42%);
+  box-shadow:
+    0 20px 46px rgba(0, 8, 16, 0.45),
+    inset 0 0 20px rgba(90, 215, 255, 0.08);
+}
+
+.timeline-kicker {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: rgba(175, 233, 255, 0.88);
+}
+
+.timeline-hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  color: #f1fcff;
+}
+
+.timeline-lead {
+  margin: 14px 0 0;
+  max-width: 70ch;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: rgba(200, 238, 252, 0.85);
+}
+
+.timeline-stats {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.timeline-stat-card {
+  border: 1px solid rgba(109, 214, 247, 0.24);
+  border-radius: 14px;
+  padding: 14px 12px;
+  background: rgba(7, 22, 34, 0.56);
+}
+
+.timeline-stat-card strong {
+  display: block;
+  font-size: 1.28rem;
+  line-height: 1;
+  color: #f3fdff;
+}
+
+.timeline-stat-card span {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(173, 233, 255, 0.75);
+}
+
+.timeline-filter-row {
+  position: sticky;
+  top: 76px;
+  z-index: 5;
+  margin: 20px 0 34px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid rgba(119, 220, 255, 0.24);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  background: rgba(2, 12, 20, 0.68);
+}
+
+.timeline-filter-chip {
+  border: 1px solid rgba(116, 220, 255, 0.26);
+  border-radius: 999px;
+  background: rgba(7, 25, 38, 0.65);
+  color: rgba(218, 246, 255, 0.92);
+  font-family: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.timeline-filter-chip:hover {
+  border-color: rgba(255, 195, 113, 0.45);
+}
+
+.timeline-filter-chip.active {
+  color: #062236;
+  border-color: rgba(255, 196, 116, 0.62);
+  background: linear-gradient(120deg, #ffd59d 0%, #81e8ff 100%);
+  box-shadow: 0 8px 20px rgba(71, 202, 249, 0.3);
+}
+
+.timeline-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 10px 0 6px;
+}
+
+.timeline-center-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(111, 229, 255, 0.95) 0%, rgba(109, 84, 179, 0.35) 100%);
+  box-shadow: 0 0 24px rgba(111, 229, 255, 0.4);
+}
+
+.timeline-item {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.timeline-item.left {
+  justify-content: flex-start;
+}
+
+.timeline-item.right {
+  justify-content: flex-end;
+}
+
+.timeline-node {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #8feaff;
+  border: 2px solid rgba(6, 25, 38, 0.9);
+  box-shadow: 0 0 16px rgba(131, 232, 255, 0.65);
+  z-index: 2;
+}
+
+.timeline-card {
+  width: calc(50% - 38px);
+  min-height: 138px;
+  border: 1px solid rgba(121, 223, 255, 0.25);
+  border-radius: 18px;
+  padding: 16px 16px 14px;
+  background:
+    linear-gradient(150deg, rgba(9, 30, 46, 0.86), rgba(4, 15, 25, 0.68)),
+    radial-gradient(circle at 85% 18%, rgba(255, 187, 94, 0.1), transparent 42%);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 32px rgba(0, 8, 16, 0.4);
+  position: relative;
+}
+
+.timeline-card::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  width: 28px;
+  height: 2px;
+  background: rgba(132, 229, 255, 0.72);
+}
+
+.timeline-item.left .timeline-card::after {
+  right: -29px;
+}
+
+.timeline-item.right .timeline-card::after {
+  left: -29px;
+}
+
+.timeline-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.timeline-day {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(115, 223, 255, 0.28);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(4, 18, 30, 0.62);
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.timeline-time {
+  color: rgba(179, 235, 255, 0.92);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+}
+
+.timeline-card h3 {
+  margin: 12px 0 0;
+  font-size: 1.14rem;
+  line-height: 1.2;
+  color: #f1fcff;
+}
+
+.timeline-card p {
+  margin: 10px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.58;
+  color: rgba(198, 237, 252, 0.82);
+}
+
+.timeline-stage {
+  display: inline-flex;
+  margin-top: 12px;
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 0.62rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.accent-cyan .timeline-node {
+  background: #85ebff;
+}
+
+.accent-cyan .timeline-stage {
+  border: 1px solid rgba(129, 232, 255, 0.42);
+  color: rgba(198, 240, 255, 0.98);
+  background: rgba(7, 34, 52, 0.76);
+}
+
+.accent-violet .timeline-node {
+  background: #9d9cff;
+}
+
+.accent-violet .timeline-stage {
+  border: 1px solid rgba(165, 156, 255, 0.5);
+  color: rgba(224, 219, 255, 0.98);
+  background: rgba(18, 17, 56, 0.74);
+}
+
+.accent-amber .timeline-node {
+  background: #ffcf91;
+}
+
+.accent-amber .timeline-stage {
+  border: 1px solid rgba(255, 210, 146, 0.44);
+  color: rgba(255, 233, 203, 0.98);
+  background: rgba(44, 29, 10, 0.66);
+}
+
+@media (max-width: 900px) {
+  .timeline-page {
+    width: min(760px, calc(100% - 24px));
+    padding-top: 88px;
+  }
+
+  .timeline-filter-row {
+    top: 68px;
+  }
+
+  .timeline-center-line {
+    left: 16px;
+    transform: none;
+  }
+
+  .timeline-item.left,
+  .timeline-item.right {
+    justify-content: flex-start;
+  }
+
+  .timeline-node {
+    left: 16px;
+    transform: translateX(-50%);
+    top: 24px;
+  }
+
+  .timeline-card {
+    width: calc(100% - 42px);
+    margin-left: 42px;
+  }
+
+  .timeline-card::after {
+    left: -28px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline-page {
+    width: calc(100% - 18px);
+    padding: 78px 0 72px;
+  }
+
+  .timeline-hero {
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .timeline-lead {
+    font-size: 0.82rem;
+  }
+
+  .timeline-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .timeline-stat-card {
+    padding: 12px 9px;
+  }
+
+  .timeline-stat-card strong {
+    font-size: 1.02rem;
+  }
+
+  .timeline-stat-card span {
+    font-size: 0.56rem;
+  }
+
+  .timeline-filter-row {
+    top: 66px;
+    margin: 14px 0 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+
+  .timeline-filter-row::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .timeline-filter-chip {
+    flex: 0 0 auto;
+    padding: 9px 14px;
+    font-size: 0.66rem;
+  }
+
+  .timeline-track {
+    gap: 16px;
+  }
+
+  .timeline-card {
+    border-radius: 14px;
+    min-height: unset;
+    padding: 13px 12px;
+  }
+
+  .timeline-card h3 {
+    font-size: 0.97rem;
+  }
+
+  .timeline-card p {
+    font-size: 0.72rem;
+  }
+
+  .timeline-day,
+  .timeline-time,
+  .timeline-stage {
+    font-size: 0.58rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-filter-chip {
+    transition: none;
+  }
+}
