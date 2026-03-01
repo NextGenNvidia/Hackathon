@@ -620,15 +620,15 @@ function Home() {
       </div>
       {/* Hackathon logo overlay - only on desktop */}
       <img
-        src="/assets/hackathon-removebg-preview.png"
+        src="/assets/ai-arena.png"
         alt="Hackathon Logo"
         className="hackathon-logo"
         style={{
           position: "absolute",
-          top: "5rem",
+          top: "8rem",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "30rem",
+          width: "40rem",
           zIndex: 100,
           pointerEvents: "none"
         }}
